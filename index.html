@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -70,8 +71,6 @@ html[dir="rtl"] .back-btn{flex-direction:row-reverse;justify-content:flex-end;}
 .sec-hd{padding:13px 20px 8px;display:flex;justify-content:space-between;align-items:center;}
 .sec-ttl{font-size:15px;font-weight:800;color:var(--text);transition:var(--tr);}
 .see-all{font-size:12px;color:var(--green);font-weight:700;cursor:pointer;}
-
-
 
 /* BOTTOM NAV */
 .bnav{background:var(--nav-bg);border-top:1px solid var(--border);
@@ -366,6 +365,7 @@ html[dir="rtl"] .cchk{right:auto;left:-7px;}
 </head>
 <body>
 <div class="phone">
+
 <!-- STATUS -->
 <div class="sbar">
   <span>9:41</span>
@@ -431,6 +431,8 @@ html[dir="rtl"] .cchk{right:auto;left:-7px;}
     <div class="ni"><span class="ni-ico">👤</span><div class="ni-dot"></div><span class="ni-lbl" id="n2p">حسابي</span></div>
   </div>
 </div>
+
+<!-- ════════ SCREEN 3 DETAIL ════════ -->
 <div class="screen" id="screen3">
   <div class="hero-area" id="det-hero">
     <span class="hero-back" onclick="goTo(2)" id="det-bk">›</span>
@@ -478,6 +480,8 @@ html[dir="rtl"] .cchk{right:auto;left:-7px;}
     <div class="ni"><span class="ni-ico">👤</span><div class="ni-dot"></div><span class="ni-lbl" id="n3p">حسابي</span></div>
   </div>
 </div>
+
+<!-- ════════ SCREEN 4 COMPARE ════════ -->
 <div class="screen" id="screen4">
   <div class="hpad">
     <div class="back-btn" onclick="goTo(3)"><span class="ba">→</span><span id="s4back">العودة للوصفة</span></div>
@@ -504,7 +508,7 @@ html[dir="rtl"] .cchk{right:auto;left:-7px;}
   </div>
   <div class="bwrap">
     <button class="obtn" id="orderBtn" onclick="openStoreOrder()">
-      🏪 <span id="btnTxt">اطلب من دانوب · </span><span id="btnPrice">٣٩ ر.س</span>
+      🛍️ <span id="btnTxt">تفاصيل طلبي من دانوب · </span><span id="btnPrice">٣٩ ر.س</span>
     </button>
   </div>
 </div>
@@ -588,7 +592,8 @@ const ORIGINS = {
   'شرائح جبن شيدر':   ['🇳🇿','نيوزيلندا','New Zealand', 1.2],
   'Cheddar slices':     ['🇳🇿','New Zealand','New Zealand', 1.2],
   'أوراق خس':          ['🇸🇦','السعودية','Saudi Arabia', 0.5],
-Saudi Arabia', 0.3],
+  'Lettuce leaves':     ['🇸🇦','Saudi Arabia','Saudi Arabia', 0.5],
+  'طماطم':             ['🇸🇦','السعودية','Saudi Arabia', 0.3],
   'Tomato':             ['🇸🇦','Saudi Arabia','Saudi Arabia', 0.3],
   'بصل أحمر':          ['🇪🇬','مصر','Egypt', 0.2],
   'Red onion':          ['🇪🇬','Egypt','Egypt', 0.2],
@@ -627,6 +632,8 @@ Saudi Arabia', 0.3],
   'فراولة':            ['🇲🇦','المغرب','Morocco', 1.8],
   'Strawberries':       ['🇲🇦','Morocco','Morocco', 1.8],
   'حليب اللوز':        ['🇺🇸','أمريكا','USA', 1.5],
+  'Almond milk':        ['🇺🇸','USA','USA', 1.5],
+  'عسل':               ['🇸🇦','السعودية','Saudi Arabia', 1.0],
   'Honey':              ['🇸🇦','Saudi Arabia','Saudi Arabia', 1.0],
   'سباغيتي':           ['🇮🇹','إيطاليا','Italy', 1.2],
   'Spaghetti':          ['🇮🇹','Italy','Italy', 1.2],
@@ -641,6 +648,8 @@ Saudi Arabia', 0.3],
   'فيتوتشيني':         ['🇮🇹','إيطاليا','Italy', 1.3],
   'Fettuccine':         ['🇮🇹','Italy','Italy', 1.3],
   'بانشيتا':           ['🇮🇹','إيطاليا','Italy', 4.5],
+  'Pancetta':           ['🇮🇹','Italy','Italy', 4.5],
+  'بيض':               ['🇸🇦','السعودية','Saudi Arabia', 0.6],
   'Eggs':               ['🇸🇦','Saudi Arabia','Saudi Arabia', 0.6],
   'جبن بيكورينو':      ['🇮🇹','إيطاليا','Italy', 3.5],
   'Pecorino cheese':    ['🇮🇹','Italy','Italy', 3.5],
@@ -842,6 +851,24 @@ function toggleLang(){
   if(curScreen===3) openRecipe(curRec);
   if(curScreen===4) updateCart();
 }
+
+/* ══════ HOME ══════ */
+function buildHomeRecs(){
+  const c=document.getElementById('home-recs'); c.innerHTML='';
+  const bgs={'fast':'var(--red-light)','healthy':'var(--green-light)','pasta':'var(--amber-light)','soup':'var(--blue-light)'};
+  HOME_PICKS.forEach(key=>{
+    const r=RECIPES[key],cm=CATS[r.cat],d=document.createElement('div');
+    d.className='rcard'; d.onclick=()=>openRecipe(key);
+    d.innerHTML=`<div class="rthumb" style="background:${bgs[r.cat]}">${r.emoji}</div>
+      <div style="flex:1;"><div class="rname">${isAr?r.nameAr:r.nameEn}</div>
+      <div class="rmeta">${(isAr?r.metaAr:r.metaEn).split('·')[0].trim()}</div>
+      <span class="rtag" style="background:${cm.light};color:${cm.color};">${isAr?cm.nameAr.replace(/ .*/,''):cm.nameEn.replace(/ .*/,'')}</span></div>
+      <span style="font-size:17px;color:var(--border);">‹</span>`;
+    c.appendChild(d);
+  });
+}
+
+/* ══════ CATEGORY ══════ */
 function openCat(cat){
   curCat=cat;
   const m=CATS[cat]||CATS.all;
@@ -891,16 +918,71 @@ function openRecipe(key){
 
 function renderIngs(){
   const r=RECIPES[curRec],l=document.getElementById('ing-list'); l.innerHTML='';
+  // hint banner
+  const hint=document.createElement('div');
+  hint.id='ing-hint';
+  hint.style.cssText=`background:var(--amber-light);border:1.5px solid var(--amber);border-radius:12px;
+    padding:9px 13px;margin-bottom:10px;font-size:12px;color:var(--amber);font-weight:700;
+    display:flex;align-items:center;gap:7px;line-height:1.5;transition:var(--tr);`;
+  hint.innerHTML=`<span style="font-size:18px;">💡</span>
+    <span id="ing-hint-txt">${isAr?'اضغط على المقادير الناقصة عندك لإضافتها للسلة 🛒':'Tap ingredients you NEED to add them to your cart 🛒'}</span>`;
+  l.appendChild(hint);
+
   r.ing.forEach((ing,i)=>{
     const val=Math.round(ing.base*servings*10)/10;
     const nm=isAr?ing.ar:ing.en;
     const amt=isAr?arN(val)+(ing.unitAr||''):(val+(ing.unitEn||''));
-    const orig=ORIGINS[nm];
+    const orig=ORIGINS[nm]||ORIGINS[isAr?ing.en:ing.ar];
     const flagHtml=orig?`<span class="iflag">${orig[0]} ${isAr?orig[1]:orig[2]}</span>`:'';
-    const d=document.createElement('div'); d.className='irow'; d.onclick=()=>toggleIng(d);
-    d.innerHTML=`<div class="ichk"></div><span class="iname">${nm}</span>${flagHtml}<span class="iamt" id="iq${i}">${amt}</span>`;
+    const d=document.createElement('div'); d.className='irow'; d.setAttribute('data-idx',i); d.onclick=()=>toggleIng(d);
+    // "have-it" indicator on the right
+    d.innerHTML=`
+      <div class="ichk" style="background:var(--border);border-color:var(--border);">
+        <span style="font-size:13px;color:var(--text-muted);">✓</span>
+      </div>
+      <span class="iname">${nm}</span>
+      ${flagHtml}
+      <span class="iamt" id="iq${i}">${amt}</span>
+      <span class="i-status" style="font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px;
+        background:var(--green-light);color:var(--green);white-space:nowrap;flex-shrink:0;">
+        ${isAr?'موجود':'Have it'}
+      </span>`;
     l.appendChild(d);
   });
+  updateIngHint();
+}
+
+function updateIngHint(){
+  const needed=getNeededIngs();
+  const hintTxt=document.getElementById('ing-hint-txt');
+  if(!hintTxt)return;
+  if(needed.length===0){
+    hintTxt.textContent=isAr?'✅ كل المقادير موجودة عندك!':'✅ You have all ingredients!';
+  } else {
+    hintTxt.textContent=isAr
+      ?`تم تحديد ${arN(needed.length)} مقادير ناقصة — اضغط "قارن وأطلب" للمتابعة`
+      :`${needed.length} ingredient${needed.length>1?'s':''} selected — tap Compare & Order`;
+  }
+  // update order button
+  const ordBtn=document.querySelector('#screen3 .obtn span');
+  if(ordBtn){
+    if(needed.length>0){
+      ordBtn.textContent=isAr?`قارن وأطلب (${arN(needed.length)} مقادير)`:`Compare & Order (${needed.length} items)`;
+    } else {
+      ordBtn.textContent=isAr?'قارن وأطلب':'Compare & Order';
+    }
+  }
+}
+
+function getNeededIngs(){
+  // returns array of ingredient indices that are checked (needed/missing)
+  const rows=document.querySelectorAll('#ing-list .irow');
+  const result=[];
+  rows.forEach(row=>{
+    const idx=row.getAttribute('data-idx');
+    if(idx!==null && row.querySelector('.ichk').classList.contains('on')) result.push(parseInt(idx));
+  });
+  return result;
 }
 
 function renderDrinks(){
@@ -934,8 +1016,30 @@ function changeCount(d){
 }
 
 function toggleIng(el){
-  const chk=el.querySelector('.ichk'),nm=el.querySelector('.iname'),was=chk.classList.contains('on');
-  chk.classList.toggle('on',!was); chk.textContent=was?'':'✓'; nm.classList.toggle('x',!was);
+  const chk=el.querySelector('.ichk');
+  const nm=el.querySelector('.iname');
+  const status=el.querySelector('.i-status');
+  const was=chk.classList.contains('on');
+  if(!was){
+    chk.classList.add('on');
+    chk.innerHTML='🛒';
+    chk.style.background='var(--red)';
+    chk.style.borderColor='var(--red)';
+    nm.style.fontWeight='800';
+    if(status){status.textContent=isAr?'ناقص':'Need it';status.style.background='var(--red-light)';status.style.color='var(--red)';}
+    el.style.background='var(--red-light)';
+    el.style.borderRadius='12px';
+  } else {
+    chk.classList.remove('on');
+    chk.innerHTML='<span style="font-size:13px;color:var(--text-muted);">✓</span>';
+    chk.style.background='var(--border)';
+    chk.style.borderColor='var(--border)';
+    nm.style.fontWeight='';
+    if(status){status.textContent=isAr?'موجود':'Have it';status.style.background='var(--green-light)';status.style.color='var(--green)';}
+    el.style.background='';
+    el.style.borderRadius='';
+  }
+  updateIngHint();
 }
 
 /* ══════ COMPARE CART ══════ */
@@ -950,40 +1054,95 @@ function selectStore(id){
 
 function updateCart(){
   const r=RECIPES[curRec],s=STORES[selStore],d=DRINKS.find(x=>x.id===selDrink)||DRINKS[0];
-  const sub=r.priceBase*s.per*servings,dPrice=d.price*servings,total=sub+dPrice+s.del-5;
+  const needed=getNeededIngs();
+
+  // Calculate sub-total from selected ingredients only
+  let sub=0;
+  if(needed.length>0){
+    needed.forEach(idx=>{
+      const ing=r.ing[idx];
+      const nm=isAr?ing.ar:ing.en;
+      const orig=ORIGINS[nm]||ORIGINS[isAr?ing.en:ing.ar];
+      const ingPrice=orig?orig[3]:0;
+      sub+=ingPrice*ing.base*servings;
+    });
+    sub=Math.round(sub*s.per*10)/10;
+  }
+  const dPrice=d.price*(needed.length>0||d.id!=='none'?servings:0);
+  const total=sub+dPrice+(needed.length>0||d.id!=='none'?s.del:0)-5;
+  const totalClamped=Math.max(0,total);
+
   document.getElementById('orderSum').textContent=fmtSrv(servings);
-  document.getElementById('cart-count').textContent=isAr?arN(servings):servings;
-  document.getElementById('ci-lbl').innerHTML=`${r.emoji} × <span id="cart-count">${isAr?arN(servings):servings}</span>`;
+  const itemLabel=needed.length>0
+    ? `${r.emoji} ${isAr?arN(needed.length)+' مقادير مختارة':needed.length+' selected items'} × ${isAr?arN(servings):servings}`
+    : (isAr?'⚠️ لم تختر أي مقادير':'⚠️ No ingredients selected');
+  document.getElementById('ci-lbl').innerHTML=itemLabel;
   document.getElementById('cart-sub').textContent=fmt(sub);
   const dcrow=document.getElementById('drink-crow');
   if(d.id!=='none'){dcrow.style.display='';document.getElementById('cart-drink-price').textContent=fmt(dPrice);}
   else dcrow.style.display='none';
-  document.getElementById('cart-del').textContent=isAr?arN(s.del)+' ر.س':'SAR '+s.del;
-  document.getElementById('cart-total').textContent=fmt(total);
+  document.getElementById('cart-del').textContent=needed.length>0?(isAr?arN(s.del)+' ر.س':'SAR '+s.del):'—';
+  document.getElementById('cart-total').textContent=fmt(totalClamped);
   document.getElementById('s4ttl').textContent=isAr?'قارن المتاجر 🛒':'Compare Stores 🛒';
   document.getElementById('s4back').textContent=isAr?'العودة للوصفة':'Back to Recipe';
-  document.getElementById('s4sub').textContent=isAr?'أفضل سعر لـ ':'Best price for ';
-  document.getElementById('cttl').textContent=isAr?'🧾 ملخص الطلب':'🧾 Order Summary';
+  document.getElementById('s4sub').textContent=isAr?'أفضل سعر لمقاديرك ':'Best price for your items ';
+  document.getElementById('cttl').textContent=isAr?'🧾 ملخص طلبك':'🧾 Your Order Summary';
   document.getElementById('cdel-lbl').textContent=isAr?'🛵 توصيل':'🛵 Delivery';
   document.getElementById('cdisc-lbl').textContent=isAr?'💚 خصم':'💚 Discount';
   document.getElementById('ctot-lbl').textContent=isAr?'الإجمالي':'Total';
   document.getElementById('cd-lbl').textContent=isAr?`🥤 ${d.ar}`:`🥤 ${d.en}`;
-  const btnTxt=isAr?s.btnAr:s.btnEn;
+  const btnTxt=isAr?('تفاصيل طلبي من '+s.nameAr):('View Order from '+s.nameEn);
   document.getElementById('btnTxt').textContent=btnTxt+' · ';
-  document.getElementById('btnPrice').textContent=fmt(total);
+  document.getElementById('btnPrice').textContent=fmt(totalClamped);
   ['danube','altamimi','carrefour','panda','lulu'].forEach(id=>{
-    const el=document.getElementById(id+'-price'); if(el){const st=STORES[id];el.textContent=fmt(r.priceBase*st.per*servings+(d.price>0?d.price*servings:0));}
-    const pp=document.getElementById('pp-'+id); if(pp) pp.textContent=isAr?'/ '+arN(servings)+' '+(r.unitAr||'حصص'):'/ '+servings+' '+(r.unitEn||'servings')+'s';
+    const st=STORES[id];
+    let stSub=0;
+    needed.forEach(idx=>{
+      const ing=r.ing[idx];
+      const nm=isAr?ing.ar:ing.en;
+      const orig=ORIGINS[nm]||ORIGINS[isAr?ing.en:ing.ar];
+      const ip=orig?orig[3]:0;
+      stSub+=ip*ing.base*servings;
+    });
+    stSub=Math.round(stSub*st.per*10)/10;
+    const el=document.getElementById(id+'-price'); if(el) el.textContent=fmt(stSub+(d.price>0?d.price*servings:0));
+    const pp=document.getElementById('pp-'+id); if(pp) pp.textContent=isAr?'/ '+arN(servings)+' '+(r.unitAr||'حصص'):'/ '+servings+' '+(r.unitEn||'serving')+'s';
     const sn=document.getElementById('sn-'+id); if(sn) sn.textContent=isAr?STORES[id].nameAr:STORES[id].nameEn;
     const sd=document.getElementById('sd-'+id); if(sd) sd.textContent=isAr?STORES[id].detAr:STORES[id].detEn;
   });
   document.getElementById('sbdg').textContent=isAr?'✓ الأفضل سعراً':'✓ Best Price';
 }
 
-/* ══════ STORE ORDER DETAILS (screen 5) ══════ */
+/* ══════ STORE ORDER DETAILS (screen 5) — SELECTED INGREDIENTS ONLY ══════ */
 function openStoreOrder(){
-  const r=RECIPES[curRec],s=STORES[selStore],d=DRINKS.find(x=>x.id===selDrink)||DRINKS[0];
-  const sub=r.priceBase*s.per*servings,dPrice=d.price*servings,total=sub+dPrice+s.del-5;
+  const r=RECIPES[curRec], s=STORES[selStore], d=DRINKS.find(x=>x.id===selDrink)||DRINKS[0];
+  const needed=getNeededIngs(); // indices of ingredients marked as "needed"
+
+  // If nothing selected, show a warning and don't proceed
+  if(needed.length===0 && d.id==='none'){
+    const hint=document.getElementById('ing-hint-txt');
+    if(hint){
+      hint.style.animation='none';
+      hint.style.color='var(--red)';
+      hint.textContent=isAr?'⚠️ اختر على الأقل مقدار واحد ناقص أولاً!':'⚠️ Please select at least one ingredient first!';
+      setTimeout(()=>{hint.style.color='';hint.style.animation='';},2500);
+    }
+    return;
+  }
+
+  // Calculate sub-total from SELECTED ingredients only × store price multiplier
+  let sub=0;
+  needed.forEach(idx=>{
+    const ing=r.ing[idx];
+    const nm=isAr?ing.ar:ing.en;
+    const orig=ORIGINS[nm]||ORIGINS[isAr?ing.en:ing.ar];
+    const ingPrice=orig?orig[3]:0;
+    sub+=Math.round(ingPrice*ing.base*servings*100)/100;
+  });
+  sub=Math.round(sub*s.per*100)/100;
+  const dPrice=d.price*(d.id!=='none'?servings:0);
+  const hasItems=needed.length>0||d.id!=='none';
+  const total=Math.max(0, sub+dPrice+(hasItems?s.del:0)-5);
 
   // Store hero
   document.getElementById('s5-store-logo').className='store-hero-logo '+s.logoClass;
@@ -992,76 +1151,107 @@ function openStoreOrder(){
   document.getElementById('s5-store-detail').textContent=isAr?s.detAr:s.detEn;
   document.getElementById('s5-store-badge').textContent=isAr?'✓ متجرك المختار':'✓ Selected Store';
   document.getElementById('s5back').textContent=isAr?'العودة للمقارنة':'Back to Compare';
-  document.getElementById('s5-items-ttl').textContent=isAr?'🛍️ تفاصيل طلبك':'🛍️ Your Order Details';
+  document.getElementById('s5-items-ttl').textContent=isAr
+    ?`🛍️ مقاديرك الناقصة (${arN(needed.length)} من ${arN(r.ing.length)})`
+    :`🛍️ Your Needed Items (${needed.length} of ${r.ing.length})`;
   document.getElementById('s5-confirm-txt').textContent=isAr?'تأكيد الطلب':'Confirm Order';
 
-  // Build order items
+  // Build order card — ONLY selected ingredients
   const list=document.getElementById('order-items-list'); list.innerHTML='';
-  const card=document.createElement('div'); card.className='oi-card';
 
-  // Header row
-  const recName=isAr?r.nameAr:r.nameEn;
-  const recPrice=fmt(sub);
-  let html=`<div class="oi-header">
-    <span class="oi-emoji">${r.emoji}</span>
-    <span class="oi-title">${recName}</span>
-    <span class="oi-qty">${isAr?'× '+arN(servings):'× '+servings}</span>
-    <span class="oi-total-price">${recPrice}</span>
-  </div><div class="oi-ing-list">`;
+  // ── empty state if only drink ──
+  if(needed.length===0){
+    const empty=document.createElement('div');
+    empty.style.cssText='text-align:center;padding:20px;color:var(--text-muted);font-size:13px;';
+    empty.textContent=isAr?'لم تختر أي مقادير — فقط المشروب سيُطلب':'No ingredients selected — only drink will be ordered';
+    list.appendChild(empty);
+  } else {
+    const card=document.createElement('div'); card.className='oi-card';
+    const recName=isAr?r.nameAr:r.nameEn;
+    let html=`<div class="oi-header">
+      <span class="oi-emoji">${r.emoji}</span>
+      <span class="oi-title">${recName}</span>
+      <span class="oi-qty">${isAr?'× '+arN(servings)+' حصص':'× '+servings+' serving'+(servings>1?'s':'')}</span>
+      <span class="oi-total-price">${fmt(sub)}</span>
+    </div><div class="oi-ing-list">`;
 
-  // Ingredient rows with origin and price
-  r.ing.forEach(ing=>{
-    const nm=isAr?ing.ar:ing.en;
-    const orig=ORIGINS[nm]||ORIGINS[isAr?ing.en:ing.ar];
-    const flag=orig?orig[0]:'🌍';
-    const country=orig?(isAr?orig[1]:orig[2]):(isAr?'غير محدد':'Unknown');
-    const ingPrice=orig?orig[3]:0;
-    const totalIngPrice=Math.round(ingPrice*ing.base*servings*10)/10;
-    const amt=isAr?arN(Math.round(ing.base*servings*10)/10)+(ing.unitAr||''):(Math.round(ing.base*servings*10)/10)+(ing.unitEn||'');
-    html+=`<div class="oi-ing-row">
-      <span class="oi-flag">${flag}</span>
-      <div style="flex:1;">
-        <div class="oi-ing-name">${nm} <span style="font-size:10px;color:var(--text-muted);">(${amt})</span></div>
-        <div class="oi-ing-origin">📍 ${country}</div>
-      </div>
-      <span class="oi-ing-price">${fmt(totalIngPrice)}</span>
-    </div>`;
-  });
-  html+='</div>';
+    // Only the needed ingredients
+    needed.forEach(idx=>{
+      const ing=r.ing[idx];
+      const nm=isAr?ing.ar:ing.en;
+      const orig=ORIGINS[nm]||ORIGINS[isAr?ing.en:ing.ar];
+      const flag=orig?orig[0]:'🌍';
+      const country=orig?(isAr?orig[1]:orig[2]):(isAr?'غير محدد':'Unknown');
+      const ingPrice=orig?orig[3]:0;
+      const totalIngPrice=Math.round(ingPrice*ing.base*servings*s.per*100)/100;
+      const val=Math.round(ing.base*servings*10)/10;
+      const amt=isAr?arN(val)+(ing.unitAr||''):(val+(ing.unitEn||''));
+      html+=`<div class="oi-ing-row">
+        <span class="oi-flag">${flag}</span>
+        <div style="flex:1;">
+          <div class="oi-ing-name">${nm}
+            <span style="font-size:10px;color:var(--text-muted);">(${amt})</span>
+          </div>
+          <div class="oi-ing-origin">📍 ${country}</div>
+        </div>
+        <span class="oi-ing-price">${fmt(totalIngPrice)}</span>
+      </div>`;
+    });
+    html+='</div>';
 
-  // Drink row
-  if(d.id!=='none'){
-    const dName=isAr?d.ar:d.en;
-    html+=`<div class="drink-order-row">
-      <span class="drink-order-ico">${d.emoji}</span>
-      <span class="drink-order-name">${dName} × ${isAr?arN(servings):servings}</span>
-      <span class="drink-order-price">${fmt(dPrice)}</span>
-    </div>`;
+    // Drink row if selected
+    if(d.id!=='none'){
+      const dName=isAr?d.ar:d.en;
+      html+=`<div class="drink-order-row">
+        <span class="drink-order-ico">${d.emoji}</span>
+        <span class="drink-order-name">${dName} × ${isAr?arN(servings):servings}</span>
+        <span class="drink-order-price">${fmt(dPrice)}</span>
+      </div>`;
+    }
+
+    card.innerHTML=html;
+    list.appendChild(card);
   }
 
-  card.innerHTML=html;
-  list.appendChild(card);
+  // Drink-only card if no ingredients but drink selected
+  if(needed.length===0 && d.id!=='none'){
+    const dCard=document.createElement('div'); dCard.className='oi-card';
+    const dObj=DRINKS.find(x=>x.id===selDrink);
+    dCard.innerHTML=`<div class="drink-order-row" style="border-top:none;">
+      <span class="drink-order-ico">${dObj.emoji}</span>
+      <span class="drink-order-name">${isAr?dObj.ar:dObj.en} × ${isAr?arN(servings):servings}</span>
+      <span class="drink-order-price">${fmt(dPrice)}</span>
+    </div>`;
+    list.appendChild(dCard);
+  }
 
   // Final totals
   document.getElementById('ftttl').textContent=isAr?'🧾 الإجمالي النهائي':'🧾 Final Total';
-  document.getElementById('ft-sub-lbl').textContent=isAr?'المواد الغذائية':'Food items';
+  document.getElementById('ft-sub-lbl').textContent=isAr
+    ?`المقادير المختارة (${arN(needed.length)})`
+    :`Selected items (${needed.length})`;
   document.getElementById('ft-sub').textContent=fmt(sub);
   const ftdr=document.getElementById('ft-drink-row');
-  if(d.id!=='none'){ftdr.style.display='';document.getElementById('ft-drink-lbl').textContent=isAr?'المشروب':'Drink';document.getElementById('ft-drink').textContent=fmt(dPrice);}
-  else ftdr.style.display='none';
+  if(d.id!=='none'){
+    ftdr.style.display='';
+    document.getElementById('ft-drink-lbl').textContent=isAr?'المشروب':'Drink';
+    document.getElementById('ft-drink').textContent=fmt(dPrice);
+  } else ftdr.style.display='none';
   document.getElementById('ft-del-lbl').textContent=isAr?'التوصيل':'Delivery';
-  document.getElementById('ft-del').textContent=isAr?arN(s.del)+' ر.س':'SAR '+s.del;
+  document.getElementById('ft-del').textContent=hasItems?(isAr?arN(s.del)+' ر.س':'SAR '+s.del):'—';
   document.getElementById('ft-disc-lbl').textContent=isAr?'خصم':'Discount';
   document.getElementById('ft-tot-lbl').textContent=isAr?'الإجمالي':'Total';
   document.getElementById('ft-tot').textContent=fmt(total);
 
+  // Store final total for confirm screen
+  window._lastTotal=total;
   goTo(5);
 }
 
 /* ══════ PLACE ORDER ══════ */
 function placeOrder(){
   const r=RECIPES[curRec],s=STORES[selStore],d=DRINKS.find(x=>x.id===selDrink)||DRINKS[0];
-  const sub=r.priceBase*s.per*servings,dPrice=d.price*servings,total=sub+dPrice+s.del-5;
+  const total=window._lastTotal||0;
   document.getElementById('conf-emoji').textContent=r.emoji;
   document.getElementById('cttl-txt').textContent=isAr?'تم الطلب! 🎉':'Order Placed! 🎉';
   document.getElementById('csub1').textContent=isAr?'طلبك لـ ':'Your ';
@@ -1100,5 +1290,12 @@ function spawnConfetti(){
 /* ══════ INIT ══════ */
 buildHomeRecs();
 </script>
+</body>
+</html>
+
+
+
+
+  
 </body>
 </html>
